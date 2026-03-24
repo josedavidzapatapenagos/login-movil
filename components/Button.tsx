@@ -1,39 +1,32 @@
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 interface Props {
   title: string;
   onPress: () => void;
   color?: string; 
+  variant?: 'outline' | 'default'; 
 }
 
-export default function MyButton({ title, onPress, color = '#2800da' }: Props) {
+export default function MyButton({ title, onPress, color = '#4f51be', variant = 'default' }: Props) {
+  const isOutline = variant === 'outline';
+  
   return (
     <TouchableOpacity 
-      style={[styles.button, { backgroundColor: color }]} 
+      style={[
+        styles.button, 
+        { backgroundColor: isOutline ? 'transparent' : color },
+        isOutline && { borderWidth: 1, borderColor: color }
+      ]} 
       onPress={onPress}
-      activeOpacity={0.7} // Efecto visual al tocarlo
+      activeOpacity={0.7}
     >
-      <Text style={styles.text}>{title}</Text>
+      <Text style={[styles.text, isOutline && { color: color }]}>{title}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    height: 55,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    // Sombra básica
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-  },
-  text: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+  button: { height: 55, borderRadius: 12, justifyContent: 'center', alignItems: 'center', width: '100%', elevation: 3, marginVertical: 8 },
+  text: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
 });
